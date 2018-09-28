@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Basic Javascript</title>
+    </head>
+    <body>
+        <h1 id="list-header"></h1>
+        
+        <h2 id="subheader"></h2>
+        
+        <ul id="cheese-list">
+        
+        </ul>
+        
+        <p>Here they are in Alphbetical Order</p>
+        <ol id="alphabetical"></ol>
+        
+        <p id="favoritest-cheese"></p>
+        
+        <table>
+            <tr>
+                <td>Milk Type</td>
+                <td id="milk-type"></td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td id="country"></td>
+            </tr>
+            <tr>
+                <td>Is is Moldy?</td>
+                <td id="is-moldy"></td>
+            </tr>
+            <tr>
+                <td>Aged</td>
+                <td id="aged"></td>
+            </tr>
+        </table>
+        
+        
+        <script>
+            // demonstrates creating a variable and assigning a value to it:
+            var listHeader = "My favorite cheeses";
+            document.getElementById("list-header").innerHTML = listHeader;
+            
+            // demonstrates creating an array
+            var cheeses = ["Wensleydale", "Pecorino Romano", "Bergennusse", "Gorgonzola"];
+            
+            // demonstrates adding to an array
+            cheeses[cheeses.length] = "Camembert";
+            
+            // demonstrates accessing second element in the array
+            var favoritestCheese = cheeses[1];
+            document.getElementById('favoritest-cheese').innerHTML = "My favoritest cheese is " + favoritestCheese + ".";
+            
+            // demonstrates using conditional statements
+            var subheader = "";
+            if(cheeses.length > 20){
+                subheader = "I love more than 20 cheeses.";
+            } else if (cheeses.length > 10){
+                subheader = "I love between 10 and 20 cheeses";
+            } else {
+                subheader = "These are my favorite " + cheeses.length + " cheeses.";
+            }
+            document.getElementById("subheader").innerHTML = subheader;
+            
+            //demonstrates creating a function with parameters
+            function addToList(listName,item){
+                var listItem = document.createElement("LI");
+                var listItemText = document.createTextNode(item);         
+                listItem.appendChild(listItemText);                              
+                document.getElementById(listName).appendChild(listItem);
+            }
+            
+            // demonstrates a function that returns a value
+            function pecorinoCountry(){
+                return "Italy";
+            }
+            
+            // demonstrates a "for" loop
+            for(var i=0; i<cheeses.length; i++){
+                addToList("cheese-list",cheeses[i]);
+            }
+            
+            // demonstrates sorting an array
+            cheeses.sort();
+            
+            // demonstrates a do/while loop
+            // this time the cheeses are in alphabetical order because array was just sorted
+            var j=0;
+            do{ 
+                addToList("alphabetical", cheeses[j]);
+                j++;  //important to increment, or else loop never stops!
+            } 
+            while (j < cheeses.length);
+            
+            // demonstrates an associative array (which is really just an object)
+            var pecorino = [];
+            pecorino['milkType'] = "sheep";
+            pecorino['country']  = pecorinoCountry();
+            pecorino['isMoldy']  = "no";
+            pecorino['aged']     = "9 months";
+            
+            // demonstrates  2 different ways that an associative array's items can be referenced
+            document.getElementById('milk-type').innerHTML = pecorino['milkType'];
+            document.getElementById('country').innerHTML   = pecorino.country;
+            document.getElementById('is-moldy').innerHTML  = pecorino['isMoldy'];
+            document.getElementById('aged').innerHTML      = pecorino.aged;
+            
+            
+        </script>
+        
+        
+        
+    </body>
+</html>
