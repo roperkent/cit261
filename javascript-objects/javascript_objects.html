@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Basic Javascript</title>
+        <style>
+            header, main{
+                width: 70%;
+                margin: 10px auto;
+            }
+            table{
+                width:100%;
+                margin:20px auto;
+                border-collapse: collapse;
+            }
+
+            td{
+                border:1px solid #ccc;
+                padding:5px;
+            }
+            main div{
+                border:1px solid #fbae26;
+                background-color: rgba(251, 174, 38, .5);
+                padding: 20px;
+                margin: 20px 0;
+            }
+        </style>
+    </head>;
+    <body>
+        <header>
+            <h1>Javascript Objects</h1>
+        </header>
+        <main>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cheese</th>
+                        <th>Country</th>
+                        <th>Milk Type</th>
+                        <th>Firmness</th>
+                        <th>Is it moldy?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="m-name"></td>
+                        <td id="m-country"></td>
+                        <td id="m-milktype"></td>
+                        <td id="m-firmness"></td>
+                        <td id="m-isMoldy"></td>
+                    </tr>
+                    <tr>
+                        <td id='s-name'></td>
+                        <td id="s-country"></td>
+                        <td id="s-milktype"></td>
+                        <td id="s-firmness"></td>
+                        <td id="s-isMoldy"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            
+            
+            <div>
+                <h2>Manchego</h2>
+                <p id="m-description"></p>
+            </div>
+            
+            <div>
+                <h2>Stilton</h2>
+                <p id="s-description"></p>
+            </div>
+            
+            <div>
+                <h2>Limburger</h2>
+                <p>Is Limburger yummy? - <span id="l-isYummy"></span></p>
+                <p>What does Limburger smell like? - <span id="l-smellsLike"></span></p>
+            </div>
+        </main>        
+            
+            
+        <script>
+            
+            // object constructor
+            function Cheese(name, country, milkType, firmness, isMoldy){
+                this.name     = name;
+                this.country  = country;
+                this.milkType = milkType;
+                this.firmness = firmness;
+                this.isMoldy  = isMoldy;
+                this.isYummy  = "Of course";
+            }
+            
+            // instantiating new cheeses
+            var manchego = new Cheese('Manchego', 'Spain', 'sheep', 'firm', 'no');
+            var stilton  = new Cheese('Stilton', 'England', 'cow', 'semi-soft', 'yes');
+            
+            // accessing ojbect properties
+            document.getElementById('m-name').innerHTML     = manchego.name;
+            document.getElementById('m-country').innerHTML  = manchego.country;
+            document.getElementById('m-milktype').innerHTML = manchego.milkType;
+            document.getElementById('m-firmness').innerHTML = manchego.firmness;
+            document.getElementById('m-isMoldy').innerHTML  = manchego.isMoldy;
+            
+            document.getElementById('s-name').innerHTML     = stilton['name'];
+            document.getElementById('s-country').innerHTML  = stilton['country'];
+            document.getElementById('s-milktype').innerHTML = stilton['milkType'];
+            document.getElementById('s-firmness').innerHTML = stilton['firmness'];
+            document.getElementById('s-isMoldy').innerHTML  = stilton['isMoldy'];
+            
+            // overriding a default property
+            var limburger = new Cheese('Germany', 'cow', 'semi-firm', 'no');
+            limburger.isYummy = "Not really";
+            
+            // adding a property not in the constructor
+            limburger.smellsLike = "dirty socks";
+            
+            document.getElementById('l-isYummy').innerHTML    = limburger.isYummy;
+            document.getElementById('l-smellsLike').innerHTML = limburger.smellsLike;
+            
+            // adding a method to the Cheese prototype
+            Cheese.prototype.getDescription = function(){
+                var description = this.name  + " is a ";
+                description += this.firmness + ", ";
+                description += this.milkType + "milk cheese from ";
+                description += this.country  + ". ";
+                
+                if(this.isMoldy == 'yes'){
+                    description += "It is moldy.";
+                } else {
+                    description += "It is not moldy.";
+                }
+                
+                return description;
+            }
+            
+            // accessing a method on an object
+            document.getElementById('m-description').innerHTML = manchego.getDescription();
+            document.getElementById('s-description').innerHTML = stilton.getDescription();
+            
+        </script>
+    </body>
+</html>
