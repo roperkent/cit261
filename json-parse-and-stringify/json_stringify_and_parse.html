@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+    <head>
+        <title>JSON - Stringify and Parse</title>
+        <style>
+            header, main{
+                width: 70%;
+                margin: 10px auto;
+            }
+            table{
+                width:100%;
+                margin:20px auto;
+                border-collapse: collapse;
+            }
+
+            td{
+                border:1px solid #ccc;
+                padding:5px;
+            }
+            main div{
+                border:1px solid #fbae26;
+                background-color: rgba(251, 174, 38, .5);
+                padding: 20px;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>JSON - Stringify and Parse</h1>
+        </header>
+        <main>
+            <div>
+                <h2>Create JS Object and Stringify It:</h2>
+                <p id="stringified"></p>
+            </div>
+            
+            <div>
+                <h2>Get JSON object from server, then do stuff with it:</h2>
+                
+                <ul>
+                    <li>Cheese: <span id="s-name"></span></li>
+                    <li>Country: <span id="s-country"></span></li>
+                    <li>Milk Type: <span id="s-milkType"></span></li>
+                    <li>Firmness: <span id="s-firmness"></span></li>
+                    <li>Is it Moldy?: <span id="s-isMoldy"></span></li>
+                    <li>Manufactured by:
+                        <ul id="manufacturers">
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </main>        
+            
+            
+        <script>
+            
+            //------------------------------------------------------
+            // Create an object, and stringify it
+            //------------------------------------------------------
+            
+            // object constructor
+            function Cheese(name, country, milkType, firmness, isMoldy, manufacturures){
+                this.name     = name;
+                this.country  = country;
+                this.milkType = milkType;
+                this.firmness = firmness;
+                this.isMoldy  = isMoldy;
+            }
+            
+            // instantiating new cheese
+            var manchego = new Cheese('Manchego', 'Spain', 'sheep', 'firm', 'no');
+            
+            // adding array as a property to the manchego object
+            manchego.manufacturers = ["La Casota", "La Solana", "Las Chimenas", "Los Carrenos", "Marantona"];
+            
+            // stringify object                          
+            var stringified = JSON.stringify(manchego);
+            document.getElementById("stringified").innerHTML = stringified;
+            
+            //-----------------------------------------------------
+            // get a JSON object from the server, parse it, and do 
+            // stuff with it
+            //-----------------------------------------------------
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    var stilton = JSON.parse(this.responseText);
+                    
+                    document.getElementById("s-name").innerHTML = stilton.name;
+                    document.getElementById("s-country").innerHTML = stilton.country;
+                    document.getElementById("s-milkType").innerHTML = stilton.milkType;
+                    document.getElementById("s-firmness").innerHTML = stilton.firmness;
+                    document.getElementById("s-isMoldy").innerHTML = stilton.isMoldy;
+                    
+                    for(var i=0; i<stilton.manufacturers.length; i++){
+                        var listItem = document.createElement("LI");
+                        var listItemText = document.createTextNode(stilton.manufacturers[i]);         
+                        listItem.appendChild(listItemText);                              
+                        document.getElementById("manufacturers").appendChild(listItem);
+                    }
+                }  
+            };
+            xmlhttp.open("GET", "stilton.json", true);
+            xmlhttp.send();
+        </script>
+    </body>
+</html>
