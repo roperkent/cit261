@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+    <head>
+        <title>JSON - Stringify and Parse</title>
+        
+        <style>
+            div#album{
+                width: 80%;
+                margin: 20px auto;
+                display:flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            img{
+                width: 250px;
+                height: auto;
+            }
+            
+            figure{
+                position: relative;
+            }
+            figcaption{
+                position: absolute;
+                left: 0;
+                bottom: 20px;
+                width: 250px;
+                background-color: rgba(0, 0, 0, 0.4);
+                color: #fff;
+                margin: 0;
+                padding-top: 7px;
+                padding-left: 20px;
+                box-sizing: border-box;
+            }
+            
+            
+        </style>
+        
+    </head>
+    <body>
+        
+        <h1>JSON Webservice</h1>
+        
+        <p>This page fetches a list of images with an AJAX request from <a href="https://jsonplaceholder.typicode.com/photos" target="_blank">https://jsonplaceholder.typicode.com/photos</a> and uses DOM functions to display them.</p>
+        
+        <div id="album">
+            
+        </div>
+        
+        
+        <script>
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    var photos = JSON.parse(this.responseText);
+                    
+                    //this api fetches 5000 photos, but I don't want to display that many
+                    for(var i=0; i< 21; i++){
+                        var fig = document.createElement("FIGURE");
+                        
+                        var img = document.createElement("IMG");
+                        img.setAttribute("src", photos[i].url);
+                        
+                        var figcaption = document.createElement("FIGCAPTION");
+                        var figcaptionText = document.createTextNode(photos[i].title);
+                        figcaption.appendChild(figcaptionText);
+                        
+                        fig.appendChild(img);
+                        fig.appendChild(figcaption);
+                        
+                        document.getElementById("album").appendChild(fig);
+                    }
+                    
+                }  
+            };
+            xmlhttp.open("GET", "https://jsonplaceholder.typicode.com/photos", true);
+            xmlhttp.send();
+        </script>
+    </body>
+</html>
