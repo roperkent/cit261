@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+    <head>
+        <title>CSS and Javascript</title>
+        
+        <style>
+            .black-and-white{
+                background-color: #000;
+                color : #fff;
+                font-family: "impact";
+                padding-left: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Using Javascript to Change CSS Properties</h1>
+        
+        <button id="font-family-button">Change Font Family</button>
+        <button id="font-color-button">Change Font Color</button>
+        <button id="bg-color-button">Change Background Color</button>
+        <button id="padding-button">Change CSS Padding</button>
+        
+        <h2>Using Javascript to change classname</h2>
+        
+        <button id="change-class">Change css class</button>
+        
+        <script>
+            document.getElementById("font-family-button").addEventListener("click",function(){
+                // array of font families
+                var font_families = ["Arial", "Courier", "Lucida Handwriting", "Times New Roman"];
+                
+                // choose random font from array
+                var newFont = font_families[Math.floor(Math.random() * 4)];
+                
+                // assign font to H1
+                document.getElementsByTagName("h1")[0].style.fontFamily = newFont;
+            });
+            
+            document.getElementById("font-color-button").addEventListener("click",function(){
+                // get a random hex number
+                var randColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+                
+                // assign new size to h1
+                document.getElementsByTagName("h1")[0].style.color = randColor;   
+            });
+            
+            document.getElementById("bg-color-button").addEventListener("click",function(){
+                // get a random hex number
+                var randColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+                
+                // assign new size to h1
+                document.getElementsByTagName("h1")[0].style.backgroundColor = randColor;   
+            });
+            
+            document.getElementById("padding-button").addEventListener("click",function(){
+                // get random padding amount
+                var randPadding = Math.floor(Math.random() * 20);
+                randPadding = randPadding + "px";
+                
+                // assign new padding to h1
+                document.getElementsByTagName("h1")[0].style.padding = randPadding; 
+            });
+            
+            document.getElementById("change-class").addEventListener("click", function(){
+                var myH2 = document.getElementsByTagName("h2")[0];
+                if(myH2.classList.contains('black-and-white')){
+                    myH2.classList.remove('black-and-white');
+                } else {
+                    myH2.classList.add('black-and-white');
+                }
+            });
+        </script>
+    </body>
+</html>
