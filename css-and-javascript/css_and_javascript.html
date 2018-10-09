@@ -10,6 +10,13 @@
                 font-family: "impact";
                 padding-left: 20px;
             }
+            
+            input{
+                font-size : 30px;
+                font-weight: 900;
+                margin: 20px 0;
+                width: 50%;
+            }
         </style>
     </head>
     <body>
@@ -24,6 +31,9 @@
         
         <button id="change-class">Change css class</button>
         
+        <div>
+            <input id="type-something" placeholder="Type Something Here">
+        </div>
         <script>
             document.getElementById("font-family-button").addEventListener("click",function(){
                 // array of font families
@@ -68,6 +78,14 @@
                 } else {
                     myH2.classList.add('black-and-white');
                 }
+            });
+            
+            document.getElementById("type-something").addEventListener("keyup", function(){
+                // get a random hex number
+                var randColor = '#'+Math.floor(Math.random()*16777215).toString(16);  
+                
+                
+                this.style.color = randColor; 
             });
         </script>
     </body>
