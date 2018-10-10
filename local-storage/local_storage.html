@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Local Storage</title>
+        
+        <style>
+            body, *{
+                font-family: arial;
+            }
+            header{
+                width: 80%;
+                margin: 0 auto;
+            }
+            main{
+                display: flex;
+                width : 80%;
+                margin: 20px auto;
+                justify-content: space-between;
+            }
+            main div{
+                border : 1px solid #ccc;
+                height: 400px;
+                width: 30%;
+                padding: 8px;
+            }
+            
+            li{
+                margin: 3px 0 3px -15px;
+            }
+            ul{
+                list-style: none;
+            }
+            span{
+                color: red;
+            }
+            .system-msg{
+                color : blue;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Local Storage</h1>
+            
+        </header>
+        <main>
+            <div id="form-container">
+                
+                    <ul>
+                        <li><input type="text" id="applicant" placeholder="Your Name"></li>
+                        <li>
+                            Position Desired:
+                            <ul>
+                                <li><label><input type="radio" name="position" value="Head Cheese Taster">Head Cheese Taster</label></li>
+                                <li><label><input type="radio" name="position" value="Assistant Cheese Slicer">Assistant Cheese Slicer</label></li>
+                                <li><label><input type="radio" name="position" value="Cheese Procurement Officer">Cheese Procurement Officer</label></li>
+                            </ul>
+                        </li>
+                        <li>Your favorite Cheeses:
+                            <ul>
+                                <li><label><input type="checkbox" value="Cheddar" class="favCheeses"> Cheddar</label></li>
+                                <li><label><input type="checkbox" value="Gorgonzola" class="favCheeses"> Gorgonzola</label></li>
+                                <li><label><input type="checkbox" value="Mozzarella" class="favCheeses"> Mozzarella</label></li>
+                                <li><label><input type="checkbox" value="Stilton" class="favCheeses"> Stilton</label></li>
+                                <li><label><input type="checkbox" value="Wensleydale" class="favCheeses"> Wensleydale</label></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <label>Years experience with cheese</label>
+                            <input type="number" id="cheeseyears">
+                        </li>
+                        <li>
+                            <button id="form-submit">Apply!</button>
+                        </li>
+                    </ul>
+            </div>
+            <div id="local-storage">
+            
+            </div>
+            <div id="session-storage">
+            
+            </div>
+        </main>
+        
+        
+        <script>
+           document.getElementById("form-submit").addEventListener("click", function(){
+               // get array of favorite cheeses from from
+               var favCheeses = [];
+               var checkedInputs = document.getElementsByClassName("favCheeses");
+               for(var i=0; i<checkedInputs.length; i++){
+                   if(checkedInputs[i].checked){
+                       favCheeses[favCheeses.length] = checkedInputs[i].value;
+                   }
+                   
+               }
+               
+               //create an object from the form values
+               var cheeseApplication = {
+                   'applicant' : document.getElementById("applicant").value,
+                   'positionDesired' : document.querySelector('input[name="position"]:checked').value,
+                   'favoriteCheeses' : favCheeses,
+                   'yearsExperience' : document.getElementById("cheeseyears").value
+               };
+               
+               // stringify object
+               var stringified = JSON.stringify(cheeseApplication);
+               
+               // add to local storage
+               localStorage.cheeseApplication = stringified;
+               
+               // add to session storage
+               sessionStorage.cheeseApplication = stringified;
+               
+               // remove form, and replace with a message
+               var msg = "<p>Thanks for applying</p>";
+               msg += "<p>Refresh page to see that your info has been stored locally.</p>";
+               document.getElementById("form-container").innerHTML = msg;
+           });
+            
+            //-------------------------------------------------------------
+            // check to see if local storage exists
+            // and do stuff if it's there
+            //-------------------------------------------------------------
+            
+            // first check for local storage value
+            if(typeof(localStorage.cheeseApplication) !== "undefined"){
+                // get stringified object from local storage
+                var stringifiedCheeseApp = localStorage.cheeseApplication;
+                
+                // parse the stringified object
+                var cheeseApp = JSON.parse(stringifiedCheeseApp);
+                
+                // use the DOM to display object values
+                var msg = "<p>Hello, <span>" + cheeseApp.applicant + "</span></p>";
+                msg += "<p>You applied to be our new <span>" + cheeseApp.positionDesired + "</span></p>";
+                msg += "<p>You indicated you like:</p>";
+                msg += "<ul>";
+                for(var i=0; i < cheeseApp.favoriteCheeses.length; i++){
+                    msg += "<li><span>" + cheeseApp.favoriteCheeses[i] + "</span></li>";
+                }
+                msg += "</ul>"
+                msg += "<p>We are impressed with your <span>" + cheeseApp.yearsExperience + "</span> years of cheese experience</p>";
+                msg += "<p class='system-msg'>This is in <strong><span>local storage</span></strong>. That means it will still show up if you refresh the page or close your browser window and come back.</p>";
+                document.getElementById("local-storage").innerHTML = msg;
+            }
+            else {
+                // nothing in local storage, so let user know
+                document.getElementById("local-storage").innerHTML = "<p>Nothing saved in Local Storage</p>";
+            }
+            
+            //-------------------------------------------------------------
+            // check to see if sessipn storage exists
+            // and do stuff if it's there
+            //-------------------------------------------------------------
+            
+            // first check for session storage value
+            if(typeof(sessionStorage.cheeseApplication) !== "undefined"){
+                
+               // get stringified object from local storage
+                var stringifiedCheeseApp = sessionStorage.cheeseApplication;
+                
+                // parse the stringified object
+                var cheeseApp = JSON.parse(stringifiedCheeseApp);
+                
+                // use the DOM to display object values
+                var msg = "<p>Hello, <span>" + cheeseApp.applicant + "</span></p>";
+                msg += "<p>You applied to be our new <span>" + cheeseApp.positionDesired + "</span></p>";
+                msg += "<p>You indicated you like:</p>";
+                msg += "<ul>";
+                for(var i=0; i < cheeseApp.favoriteCheeses.length; i++){
+                    msg += "<li><span>" + cheeseApp.favoriteCheeses[i] + "</span></li>";
+                }
+                msg += "</ul>"
+                msg += "<p>We are impressed with your <span>" + cheeseApp.yearsExperience + "</span> years of cheese experience</p>";
+                msg += "<p class='system-msg'>This is in <strong><span>session storage</span></strong>. That means it will still show up if you refresh the page but <strong>it will be lost</strong> if you close your browser window and come back.</p>";
+                document.getElementById("session-storage").innerHTML = msg;
+            }
+            else {
+                // nothing in session storage, so let user know
+                document.getElementById("session-storage").innerHTML = "<p>Nothing saved in Session Storage</p>";
+            }
+            
+            
+        </script>
+    </body>
+</html>
