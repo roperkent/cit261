@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Dom Manipulation</title>
+        
+        <style>
+            body, * {
+                font-family: arial;
+            }
+            div.container{
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            div#to-do-adder{
+                display: flex;
+            }
+            div#to-do-adder input{
+                width : 80%;
+            }
+            div#to-do-adder button{
+                width : 18%;
+            }
+            ul{
+                list-style: none;
+                padding-left: 0;
+            }
+            li{
+                padding : 7px;
+                border-radius: 3px;
+                font-weight: 900; 
+                margin-bottom: 2px;
+            }
+            li:not(.alert){
+                cursor: pointer;
+            }
+            li.alert {
+                color : rgb(139,0,0);
+                border : 1px solid red;
+                background-color: 	rgb(255,99,71);
+            }
+            li.not-done{
+                color : darkgreen;
+                border : 1px solid darkgreen;
+                background-color: 	palegreen;
+            }
+            li.done{
+                color : darkblue;
+                border : 1px solid darkblue;
+                background-color: lightblue;
+            }
+            input {
+                padding: 7px;
+                border-radius: 3px;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Dom Manipulation - To-do list</h1>
+        </header>
+        <main>
+            <div class="container">
+                <p><strong>Instructions</strong><br>
+                Use form to add items.<br>
+                Click on green items to mark as "done".<br>
+                Click on blue items to remove.</p>
+                <div id="to-do-adder">
+                    <input type="text" id="new-to-do" placeholder="add to-do list item">
+                    <button>Add</button>
+                </div>
+                <div >
+                    <ul id="to-do-list">
+                        
+                    </ul>
+                </div>
+            </div>
+        </main>
+        
+        <script>
+            // assign some variables, to save typing later
+            var toDoList = document.getElementById("to-do-list");
+            var newToDo = document.getElementById("new-to-do"); 
+            
+            
+            // some functions 
+            var addToList = function(newItem, index){
+                addToDom(newItem, 'not-done', index);
+            };
+            
+            var addToDom = function(newItem, classname, index, insertBefore){
+                var li = document.createElement("li");
+                var liText = document.createTextNode(newItem);
+                li.appendChild(liText);
+                var liClass = document.createAttribute('class');
+                liClass.value = classname;
+                li.setAttributeNode(liClass);
+                var liData = document.createAttribute('data-index');
+                liData.value = index;
+                li.setAttributeNode(liData);
+                
+                if(insertBefore == 0){
+                    toDoList.appendChild(li);
+                } else {
+                    // next line increments, because for some reason script
+                    // is inserting sooner than I want it to
+                    insertBefore++;
+                    toDoList.insertBefore(li, toDoList.childNodes[insertBefore]);
+                }  
+            };
+            
+            var noItemAlert = function(){
+                var li = document.createElement("li");
+                var liText = document.createTextNode("Your to-do list is empty");
+                li.appendChild(liText);
+                var liClass = document.createAttribute("class");
+                liClass.value = "alert";
+                li.setAttributeNode(liClass);
+                
+                toDoList.appendChild(li); 
+            }
+            
+            var removeAlert = function(){
+                var liAlert = document.getElementsByClassName('alert');
+                // check to see alert element exists. 
+                if(liAlert.length > 0){
+                    // the alert exists
+                    // since it will be the first child of our <ul>, we can remove it that way
+                    toDoList.removeChild(toDoList.childNodes[1]);
+                }
+            }
+            
+            var findInsertBefore = function(){
+                // this function looks at current list to find where "not-done"
+                // stops and "done" begins
+                var insertBefore = 0;
+                for(var i=0; i<toDoList.childElementCount; i++){
+                    if(toDoList.children[i].classList.contains("not-done")){
+                        // do nothing
+                    } else {
+                        // only want to change insertBefore if it is 0
+                        if(insertBefore == 0){
+                            insertBefore = i;
+                        }
+                    }
+                }
+                return insertBefore;
+            }
+            
+            //-------------------------------------------------
+            // runs on page load:
+            //-------------------------------------------------
+            
+            // get to-do list from local storage, if it exists
+            if(typeof(localStorage.toDoList) !== "undefined"){
+                // get local storage and parse it
+                var stringified = localStorage.toDoList;
+                var toDoArray = JSON.parse(stringified);
+                
+                // if empty array, display alert message, otherwise, show each item
+                if(toDoArray.length > 0){
+                    // loop through array and create DOM elements for each item in array
+                    for(var i=0; i<toDoArray.length; i++){
+                        //var arrayItem = toDoArray[i].item;
+                        addToDom(toDoArray[i].item, toDoArray[i].className, i, 0);
+                    }    
+                } else {
+                    noItemAlert();
+                }
+                
+                
+                
+            } else {
+                // to-do list doesn't exist in local storage
+                
+                // display alert message about empty list to user
+                noItemAlert();
+                
+                // set empty to-do list variable
+                var toDoArray = [];
+            }
+            
+            // event listener to add to-do items
+            newToDo.addEventListener("change", function(){
+                //remove alert,if it exists
+                removeAlert();
+                
+                // add it to screen
+                var insertBefore = findInsertBefore();
+                addToDom(newToDo.value, 'not-done', toDoArray.length, insertBefore);
+                
+                // create an object and add it to toDoArray
+                if(insertBefore == 0){
+                    toDoArray[toDoArray.length] = {item : newToDo.value, className : 'not-done' }; 
+                } else {
+                    toDoArray.splice(insertBefore, 0, {item : newToDo.value, className : 'not-done' });
+                }
+                
+                
+                // stringify array and add to local storage
+                var stringified = JSON.stringify(toDoArray);
+                localStorage.toDoList = stringified;
+                
+                // remove text from input box, and put focus back on box
+                newToDo.value = "";
+                newToDo.focus();
+            });
+            
+            // event listener that listens for clicks on list items
+            toDoList.addEventListener('click', function(e){
+                if(e.target && e.target.nodeName == 'LI'){
+                    if(e.target.classList.contains('not-done')){
+                        // has class 'not-done', so let's move it to bottom of list and change
+                        // it to 'done'
+                        
+                        var toDoItem = toDoArray[e.target.dataset.index].item;
+                        var oldIndex = e.target.dataset.index;
+                        
+                        // remove from DOM
+                        toDoList.removeChild(e.target);
+                        
+                        // remove from array that we store to local storage
+                        toDoArray.splice(e.target.dataset.index,1);
+                        
+                        // update indexes on remaining list items
+                        for(var i=0; i<toDoList.childElementCount; i++){
+                            if(parseInt(toDoList.children[i].dataset.index) > parseInt(oldIndex)){
+                                toDoList.children[i].dataset.index--;
+                            } 
+                        }
+                        
+                        // add back to DOM on bottom of list as a "done" item
+                        addToDom(toDoItem, 'done', toDoArray.length, 0);
+                        
+                        // add back to array that we store to local storage
+                        toDoArray[toDoArray.length] = {item : toDoItem, className : 'done' };
+                        
+                        // stringify array and update local storage
+                        var stringified = JSON.stringify(toDoArray);
+                        localStorage.toDoList = stringified;
+                        
+                    } else {
+                        // has class of done, so remove from dom and array
+                        
+                        var oldIndex = e.target.dataset.index;
+                        
+                        // remove from DOM
+                        toDoList.removeChild(e.target);
+                        
+                        // remove from array that we store to local storage
+                        toDoArray.splice(e.target.dataset.index,1);
+                        
+                        // if array is empty, display empty list alert
+                        if(toDoList.childElementCount == 0){
+                            noItemAlert();
+                        }
+                        
+                        // update indexes on remaining list items
+                        for(var i=0; i<toDoList.childElementCount; i++){
+                            if(parseInt(toDoList.children[i].dataset.index) > parseInt(oldIndex)){
+                                toDoList.children[i].dataset.index--;
+                            } 
+                        }
+                        
+                        // stringify array and update local storage
+                        var stringified = JSON.stringify(toDoArray);
+                        localStorage.toDoList = stringified;
+                    }
+                }
+            });
+            
+        </script>
+    </body>
+</html>
