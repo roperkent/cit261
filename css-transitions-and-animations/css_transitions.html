@@ -18,13 +18,15 @@
                 height: 30px;
                 padding: 8px 0;
                 position: relative;
-                animation: moveNumbers 2s infinite;
+                
+            }
+            .moveNumbers{
+                animation: moveNumbers 2s 1;
                 animation-play-state: paused;
             }
             
             @keyframes moveNumbers{
-                0% { left : 0px; transform: rotate(0deg); }
-                1% { left : 800px; transform: rotate(180deg); } 
+                0% { left : 800px; transform: rotate(180deg); } 
                 100% { left : 0px; transform: rotate(360deg); }
             }
             #result-bar{
@@ -70,7 +72,7 @@
 
             
             <div id="result-bar" class="width1"></div>
-            <div id="result"></div>
+            <div id="result" class="moveNumbers"></div>
         </div>
         
         
@@ -89,7 +91,7 @@
                         var speakersStr = speakers.toLocaleString();
                         document.getElementById("result").innerHTML = speakersStr;
 
-                        
+                        // changes classname, to trigger css transition
                         resultBar.classList.remove("width1", "width2", "width5", "width10", "width25", "width100");
                         if(speakers > 10000000){
                             resultBar.classList.add("width100");
@@ -103,6 +105,12 @@
                             resultBar.classList.add("width2");
                         }
                         
+                        
+                        // triggers css animation (flying number)
+                        document.getElementById("result").classList.remove('moveNumbers');
+                        setTimeout(function() {
+                            document.getElementById("result").classList.add('moveNumbers');
+                        },1);
                         document.getElementById("result").style.animationPlayState = "running";
                         
                     }  
@@ -111,9 +119,7 @@
                 xmlhttp.send();
             });
             
-            document.getElementById("result").addEventListener("animationiteration", function(){
-                document.getElementById("result").style.animationPlayState = "paused";   
-            });
+            
            
         </script>
     </body>
