@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+        <title>CSS Transitions</title>
+        
+        <style>
+            
+            .container{
+                max-width: 600px;
+                margin: 80px auto 0;
+                padding-bottom: 50px;
+                font-family: arial;
+                font-size: 1.5rem;
+                overflow: hidden;
+            }
+            #result{
+                width: 20%;
+                height: 30px;
+                padding: 8px 0;
+                position: relative;
+                animation: moveNumbers 2s infinite;
+                animation-play-state: paused;
+            }
+            
+            @keyframes moveNumbers{
+                0% { left : 0px; transform: rotate(0deg); }
+                1% { left : 800px; transform: rotate(180deg); } 
+                100% { left : 0px; transform: rotate(360deg); }
+            }
+            #result-bar{
+                margin: 5px 0;
+                height: 50px;
+                background-color : darkorange;
+                -webkit-transition: width 2s;
+                transition: width 2s;
+            }
+            .width1  { width : 1%; }
+            .width2  { width : 2%; }
+            .width5  { width : 5%; }
+            .width10 { width : 10% }
+            .width25 { width : 25%; }
+            .width100{ width : 100%; }
+            
+            select{
+                width: 100%;
+                font-size: 1.3rem;
+                padding: 2px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CSS Transistions and Animations Triggered by Javascript</h1>
+        <h2>Number of Speakers of Selected Languages in California in 2013</h2>
+        <p>(Data from <a href="https://www.census.gov/data/developers/data-sets/language-stats.html" target="_blank">U.S. Census Bureau</a>)</p>
+        
+        <div class="container">
+            <select id="select-language">
+                <option value="">Choose Language</option>
+                <option value="711">Cantonese</option>
+                <option value="620">French</option>
+                <option value="607">German</option>
+                <option value="712">Mandarin</option>
+                <option value="721">Mien</option>
+                <option value="657">Pashto</option>
+                <option value="629">Portuguese</option>
+                <option value="767">Samoan</option>
+                <option value="625">Spanish</option>
+                <option value="768">Tongan</option>
+            </select>
+
+            
+            <div id="result-bar" class="width1"></div>
+            <div id="result"></div>
+        </div>
+        
+        
+        <script>
+            document.getElementById('select-language').addEventListener('change', function(){
+                var lang = document.getElementById('select-language').value;
+                var resultBar = document.getElementById("result-bar");
+                var currentClass = "width1";
+                
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        
+                        var result = JSON.parse(this.responseText);
+                        var speakers = parseInt(result[1][0]);
+                        var speakersStr = speakers.toLocaleString();
+                        document.getElementById("result").innerHTML = speakersStr;
+
+                        
+                        resultBar.classList.remove("width1", "width2", "width5", "width10", "width25", "width100");
+                        if(speakers > 10000000){
+                            resultBar.classList.add("width100");
+                        } else if (speakers > 200000){
+                            resultBar.classList.add("width25");
+                        } else if (speakers > 100000){
+                            resultBar.classList.add("width10");
+                        } else if (speakers > 50000){
+                            resultBar.classList.add("width5");
+                        } else {
+                            resultBar.classList.add("width2");
+                        }
+                        
+                        document.getElementById("result").style.animationPlayState = "running";
+                        
+                    }  
+                };
+                xmlhttp.open("GET", "https://api.census.gov/data/2013/language?get=EST,LANLABEL,NAME&for=state:06&LAN=" + lang, true);
+                xmlhttp.send();
+            });
+            
+            document.getElementById("result").addEventListener("animationiteration", function(){
+                document.getElementById("result").style.animationPlayState = "paused";   
+            });
+           
+        </script>
+    </body>
+</html>
