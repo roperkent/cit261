@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Defining CSS Transitions </title>
+        <style>
+            body{
+                margin: 0;
+                padding: 0;
+                font-family: arial, sans-serif;
+            }
+            div.container{
+                width: 100%;
+                height: 100vh;
+                background-color: #7ec0ee;
+                margin: 0;
+                padding: 30px;
+                position: absolute;
+                transition: background-color 4s ease-in;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            div.container.nightsky{
+                background-color: #003366;
+            }
+            .sun{
+                position: absolute;
+                top:140px;
+                left:80px;
+                width:150px;
+                height: 150px;
+                background-color : yellow;
+                opacity: 1;
+                border-radius : 50%;
+                cursor: pointer;
+                transition: background-color 4s ease-in, opacity 4s linear, top 4s ease-in;
+            }
+            .sun.night{
+                background-color : rgb(255,69,0);
+                opacity: 0;
+                cursor: default;
+                top : 100vh;
+            }
+            .moon{
+                position: absolute;
+                top : 100vh;
+                right : 150px;
+                width:150px;
+                height: 150px;
+                background-color: #7ec0ee;
+                opacity: 1;
+                border-radius : 50%;
+                cursor: default;
+                transition: background-color 4s ease-in, opacity 6s linear, top 4s ease-in;   
+            }
+            .moon.night{
+                cursor: pointer;
+                background-color: #ccc;
+                top : 140px;
+            }
+            
+            h1, p{
+                color: black;
+                transition: color 4s linear;
+            }
+            h1.night{
+                color : white;
+            }
+            p.night{
+                color : yellow;
+            }
+            
+            footer{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                height: 200px;
+                width : 100%;
+                position: absolute;
+                bottom: 0;
+                background : url(footer.png) repeat-x;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container" class="container">
+            <div id="sun" class="sun"></div>
+            <div id="moon" class="moon"></div>
+            
+            <h1>Designing, Defining, and Triggering CSS3 Transitions without Custom Libraries</h1>
+            
+            <p>Click on the <span id="trigger">Sun</span>.</p>
+        </div>    
+        
+        <footer></footer>
+            
+            <script>
+                var currentState = "day";
+                var container = document.getElementById("container");
+                var sun = document.getElementById("sun");
+                var moon = document.getElementById("moon");
+                var h1 = document.getElementsByTagName("h1")[0];
+                var p  = document.getElementsByTagName("p")[0];
+                var triggerSpan = document.getElementById("trigger");
+                
+                
+                sun.addEventListener("click", function(){
+                    // only make changes if sun was clicked during the day 
+                    if(currentState == "day"){
+                        currentState = "night";
+                        container.classList.add("nightsky");
+                        sun.classList.add("night");
+                        moon.classList.add("night");
+                        h1.classList.add("night");
+                        p.classList.add("night");
+                        triggerSpan.innerHTML = "moon";
+                    }
+                });
+                moon.addEventListener("click", function(){
+                    // only make changes if moon was clicked during the night 
+                    if(currentState == "night"){
+                        currentState = "day";
+                        container.classList.remove("nightsky");
+                        sun.classList.remove("night");
+                        moon.classList.remove('night');
+                        h1.classList.remove("night");
+                        p.classList.remove("night");
+                        triggerSpan.innerHTML = "sun";
+                    }
+                });
+            </script>
+        
+    </body>
+</html>
