@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+    <head>
+        <title></title>
+        
+        <style>
+            body, *{
+                font-family: arial, sans-serif;
+            }
+            header{
+                position: absolute;
+                top:0;
+                left: 0;
+            }
+            main{
+                position: absolute;
+                top: 0;
+                left: 120px;
+            }
+            div.hamburger{
+                width: 70px;
+                height: 70px;
+                cursor: pointer;
+                border: 1px solid #000;
+                border-radius: 12px;
+                position: absolute;
+                z-index: 100;
+                margin: 15px 10px 0 5px;
+                transition: all 1s cubic-bezier(0.1, 0.3, 0.8, 1.6);
+                
+            }
+            div.hamburger span{
+                display: block;
+                width: 50px;
+                border-width: 3px 0 0 0;
+                border-style: solid;
+                border-color: #000;
+                margin: 15px auto;
+                position: relative;
+                top: 0;
+                transition: all 1s ease-in;
+            }
+            div.clicked{
+                box-shadow: 0 0 2px 2px #fff;
+                transform:  translateX(215px)
+                    rotate(540deg);
+            }
+            .hamburger.clicked span:nth-child(1){
+                border-color: #f00;
+                transform: rotate(45deg);
+                top: 18px;
+            }
+            .hamburger.clicked span:nth-child(2){
+                border-width: 0;
+            }
+            .hamburger.clicked span:nth-child(3){
+                border-color: #f00;
+                transform: rotate(-45deg);
+            }
+            #sidebar-nav{
+                width: 300px;
+                height: 100vh;
+                position: absolute;
+                top: 0;
+                transform: translateX(-100%);
+                transition: all 1s ease-in;
+                z-index: 50;
+            }
+            #sidebar-nav.opened{
+                transform: translateX(140px);
+                background: rgba(0,0,0,.8);
+                transform: translateX(0);
+            }
+            
+            #sidebar-nav ul{
+                list-style: none;
+                margin-top: 120px;
+                margin-left: 0;
+                padding-left: 0;
+            }
+            #sidebar-nav ul li{
+                width:90%;
+                display: block;
+                border: 1px solid yellow;
+                margin-bottom: 5px;
+                padding: 5px;
+                transform: translate(-70px);
+                transition: transform 0.7s cubic-bezier(0.1, 0.3, 0.8, 1.6) .8s;
+            }
+            #sidebar-nav ul li a{
+                color: yellow;
+                text-decoration: none;
+            }
+            #sidebar-nav.opened li{
+                transform: translateX(10px);
+            }
+            #photo{
+                margin-left: 250px;
+                transition: transform 2s ease-in;
+            }
+            #photo.rotated{
+                transform: rotate3d(0, 1, 0, 180deg);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div id="hamburger" class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <nav id="sidebar-nav">
+                <ul>
+                    <li><a href="#" id="now-click-here">Now Click Here</a></li>
+                    <li><a href="index.php">Placeholder</a></li>
+                    <li><a href="#">Placeholder</a></li>
+                    <li><a href="#">Placeholder</a></li>
+                    <li><a href="#">Placeholder</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <h1>Designing, Defining, and Triggering CSS3 Transforms without Custom Libraries</h1>
+            
+            <p>Click on the icon! Then click on "Now Click Here"</p>
+            
+            <img id="photo" src="photo-1541167789142-b241ead81115.jpg">
+            
+            <p>Photo from <a href="https://unsplash.com/photos/MirsgKxIRGE">unsplash.com</a></p>
+        </main>
+        
+        <script>
+            var hamburger = document.getElementById("hamburger");
+            var menu = document.getElementById("sidebar-nav");
+            var photo = document.getElementById("photo");
+            var photoControl = document.getElementById("now-click-here");
+            
+            hamburger.addEventListener('click', function(){
+                hamburger.classList.toggle('clicked');
+                menu.classList.toggle('opened');
+            });
+            
+            photoControl.addEventListener('click', function(){
+                photo.classList.toggle('rotated');
+            })
+        </script>
+    </body>
+</html>
