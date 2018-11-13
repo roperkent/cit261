@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Defining CSS Transitions </title>
+        <style>
+            body{
+                margin: 0;
+                padding: 0;
+                font-family: arial, sans-serif;
+            }
+            div.container{
+                width: 100%;
+                height: 100vh;
+                background-color: #7ec0ee;
+                margin: 0;
+                padding: 30px;
+                position: absolute;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            
+            #chooser{
+                width: 300px;
+                margin: 70px auto;
+            }
+            
+            #weather_select{
+                font-size: 1.6em;
+                width: 300px;
+            }
+            
+            footer{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                height: 200px;
+                width : 100%;
+                position: absolute;
+                bottom: 0;
+                background : url(footer.png) repeat-x;
+            }
+            
+            #cloud1{ z-index: 40;}
+            #cloud2{ z-index: 20;}
+            #cloud3{ z-index: 40;}
+            #cloud4{ z-index: 20;}
+            #cloud5{ z-index: 40;}
+            #cloud6{ z-index: 20;}
+            div.cloud{
+                width:320px;
+                height:200px;
+                background: url(cloud.png);
+                position: absolute;
+                top: 0;
+                left  : -400px;
+            }
+            .cloud1{
+                animation: moveClouds1 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .cloud2{
+                animation: moveClouds2 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .cloud3{
+                animation: moveClouds3 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .cloud4{
+                animation: moveClouds4 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .cloud5{
+                animation: moveClouds5 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .cloud6{
+                animation: moveClouds6 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .remove-cloud1{
+                animation: removeClouds1 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .remove-cloud2{
+                animation: removeClouds2 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .remove-cloud3{
+                animation: removeClouds3 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .remove-cloud4{
+                animation: removeClouds4 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .remove-cloud5{
+                animation: removeClouds5 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            .remove-cloud6{
+                animation: removeClouds6 2s 1, bounceClouds 2s 1;
+                animation-iteration-count: 1, infinite;
+                animation-fill-mode: forwards, forwards;
+            }
+            @keyframes moveClouds1{
+                0% { left : -400px;}
+                100% { left : 0; }
+            }
+            @keyframes moveClouds2{
+                0% { left : -400px;}
+                100% { left : 15%; }
+            }
+            @keyframes moveClouds3{
+                0% { left : -400px;}
+                100% { left : 30%; }
+            }
+            @keyframes moveClouds4{
+                0% { left : -400px;}
+                100% { left : 45%; }
+            }
+            @keyframes moveClouds5{
+                0% { left : -400px;}
+                100% { left : 60%; }
+            }
+            @keyframes moveClouds6{
+                0% { left : -400px;}
+                100% { left : 75%; }
+            }
+            @keyframes removeClouds1{
+                0% { left : 0; }
+                100% { left : -400px;}
+            }
+            @keyframes removeClouds2{
+                0% { left : 15%; }
+                100% { left : -400px;}
+            }
+            @keyframes removeClouds3{
+                0% { left : 30%; }
+                100% { left : -400px;}
+            }
+            @keyframes removeClouds4{
+                0% { left : 45%; }
+                100% { left : -400px;}
+            }
+            @keyframes removeClouds5{
+                0% { left : 60%; }
+                100% { left : -400px;}
+            }
+            @keyframes removeClouds6{
+                0% { left : 75%; }
+                100% { left : -400px;}
+            }
+            @keyframes bounceClouds{
+                0%,
+                100% {
+                    transform: rotate3d(0, 0, 1, -5deg)
+                }
+                50% {
+                    transform: rotate3d(0, 0, 1, 5deg)
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container" class="container">
+            <h1>Designing, Defining, and Triggering CSS3 Animations without Custom Libraries</h1>
+            
+            <div id="chooser">
+                <p>Choose Your Weather</p>
+                <select id="weather_select">
+                    <option value="clear">Clear Skies</option>
+                    <option value="cloudy">Cloudy</option>
+                </select>
+            </div>
+            
+            <div id="cloud1" class="cloud"></div>
+            <div id="cloud2" class="cloud"></div>
+            <div id="cloud3" class="cloud"></div>
+            <div id="cloud4" class="cloud"></div>
+            <div id="cloud5" class="cloud"></div>
+            <div id="cloud6" class="cloud"></div>
+        </div>    
+        
+        <footer></footer>
+            
+            <script>
+                var weather_select = document.getElementById("weather_select");
+                
+                weather_select.addEventListener("change", function(){
+                   if(weather_select.value == "clear"){
+                       document.getElementById("cloud1").classList.remove("cloud1");
+                       document.getElementById("cloud2").classList.remove("cloud2");
+                       document.getElementById("cloud3").classList.remove("cloud3");
+                       document.getElementById("cloud4").classList.remove("cloud4");
+                       document.getElementById("cloud5").classList.remove("cloud5");
+                       document.getElementById("cloud6").classList.remove("cloud6");
+                       document.getElementById("cloud1").classList.add("remove-cloud1");
+                       document.getElementById("cloud2").classList.add("remove-cloud2");
+                       document.getElementById("cloud3").classList.add("remove-cloud3");
+                       document.getElementById("cloud4").classList.add("remove-cloud4");
+                       document.getElementById("cloud5").classList.add("remove-cloud5");
+                       document.getElementById("cloud6").classList.add("remove-cloud6");
+                   } else if(weather_select.value = "cloudy") {
+                       document.getElementById("cloud1").classList.remove("remove-cloud1");
+                       document.getElementById("cloud2").classList.remove("remove-cloud2");
+                       document.getElementById("cloud3").classList.remove("remove-cloud3");
+                       document.getElementById("cloud4").classList.remove("remove-cloud4");
+                       document.getElementById("cloud5").classList.remove("remove-cloud5");
+                       document.getElementById("cloud6").classList.remove("remove-cloud6");
+                       document.getElementById("cloud1").classList.add("cloud1");
+                       document.getElementById("cloud2").classList.add("cloud2");
+                       document.getElementById("cloud3").classList.add("cloud3");
+                       document.getElementById("cloud4").classList.add("cloud4");
+                       document.getElementById("cloud5").classList.add("cloud5");
+                       document.getElementById("cloud6").classList.add("cloud6");
+                   }
+                });
+                
+                
+            </script>
+        
+    </body>
+</html>
