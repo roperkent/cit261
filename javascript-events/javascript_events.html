@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Standard JavaScript Events Including those for Mobile Devices</title>
+        
+        <style>
+            main{
+                width:100%;
+                margin: 0;
+                overflow: hidden;
+            }
+            .glow{
+                box-shadow: 0 0 5px blue;
+            }
+            
+            #input_keyup{
+                transition: all .7s;
+            }
+            .wobbled{
+                transform: rotate(5deg);
+            }
+            #flyaway{
+                transition: all 2s ease-in;
+            }
+            .flownaway{
+                transform:  translateX(3000px);
+            }
+            #innerflyaway{
+                background: #85C1E9;
+                padding: 3px;
+                border-radius: 2px;
+                transition: all 2s;
+            }
+            .spin{
+                transform: rotate(720deg);
+            }
+            .flewaway{
+                background: yellow;
+                padding: 3px;
+                border-radius: 2px;
+                transition: all 2s;
+            }
+            #scrollme{
+                width:200px;
+                height: 200px;
+                border: 1px solid black;
+                overflow-y: scroll;
+            }
+            #touchthis{
+                background: #85C1E9;
+                padding: 5px;
+                border-radius: 2px;
+                transition: all 2s;
+                margin: 8px;
+            }
+            .disappeared{
+                opacity: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Standard JavaScript Events Including those for Mobile Devices</h1>
+            
+            
+            <table>
+                <tbody>
+                    <tr>
+                        <td>On Focus:</td>
+                        <td><input type="text" id="input_focus" placeholder="glows when you focus"></td>
+                    </tr>
+                    <tr>
+                        <td>On KeyUp</td>
+                        <td><input type="text" id="input_keyup" placeholder="wobbles as you type"></td>
+                    </tr>
+                    <tr>
+                        <td>On mouseover/ transitionend</td>
+                        <td id="transition_status"><div id="flyaway">
+                                <div id="innerflyaway">Flies away when you hover over</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>On Scroll</td>
+                        <td>
+                            <div id="scrollme">
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                                <p>Background color changes each time you scroll.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>On Touchstart/ Touchend</td>
+                        <td>
+                            <div id="touchthis">Touch This</div>
+                        </td>
+                    </tr>
+                </tbody>
+            
+            </table>
+        </main>
+        
+        <script>
+            document.getElementById("input_focus").addEventListener("focus", function(){
+               this.classList.add('glow');
+            });
+            document.getElementById("input_keyup").addEventListener("keyup", function(){
+               this.classList.toggle('wobbled');
+            });
+            document.getElementById("flyaway").addEventListener("mouseover", function(){
+                this.classList.add('flownaway');
+                document.getElementById("innerflyaway").classList.add("spin");
+            });
+            document.getElementById("flyaway").addEventListener("transitionend", function(){
+                document.getElementById("transition_status").innerHTML = "<div class='flewaway'>it flew away!</div>";
+            });
+            document.getElementById("scrollme").addEventListener("scroll", function(){
+                // get a random hex number
+                var randColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+                
+                this.style.backgroundColor = randColor; 
+            });
+            document.getElementById("touchthis").addEventListener("touchstart", function(){
+               this.classList.add('disappeared');
+            });
+            document.getElementById("touchthis").addEventListener("touchend", function(){
+               this.classList.remove('disappeared');
+            });
+        </script>
+    </body>
+</html>
