@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+    <head>
+        <title>HTML5 Tags - Video, Audio, and Canvas</title>
+        
+        <style>
+            main{
+                width : 800px;
+                margin: 0 auto;
+            }
+            video{
+                width: 400px;
+                height: auto;
+                margin: 10px 0;
+            }
+            .videoButton{
+                color: white;
+                background: green;
+                border : 1px solid darkgreen;
+                padding: 8px;
+                border-radius: 8px;
+                text-decoration: none;
+                display: inline-block;
+            }
+            #pauseButton{
+                background: red;
+                border : 1px solid darkred;
+            }
+            
+            #bark_audio{
+                display: none;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>HTML5 Tags - Video, Audio, and Canvas</h1>
+
+            <h2>Video Tag</h2>
+
+            <video id="earthVideo" controls>
+                <source src="video3694.mp4">
+                    The video didn't load.
+            </video>
+
+            <div id="controls">
+                <a href="#" id="playButton" class="videoButton">Play the Video</a>
+                <a href="#" id="pauseButton" class="videoButton">Pause the Video</a>
+
+            </div>
+
+            <h2>Audio Tag</h2>
+
+            <audio id="bark_audio" controls>
+                <source src="dog_bark.ogg" type="audio/ogg">
+                <source src="dog_bark.mp3" type="audio/mpeg">
+                Your browser does not support the audio tag.
+            </audio>
+
+            <p>Click on the puppy to make him bark</p>
+            <img src="dog.png" id="dog_art">
+
+            <h2>Canvas Tag</h2>
+
+            <div>
+                <select id="night_or_day">
+                    <option value="">Night or Day?</option>
+                    <option value="night">Night</option>
+                    <option value="day">Day</option>
+                </select>
+                <select id="white_or_red">
+                    <option value="">White or Red House?</option>
+                    <option value="white">White</option>
+                    <option value="red">Red</option>
+                </select>
+            </div>
+            
+            
+            <canvas id="kentsHouse" width="500" height="400" style="border:1px solid #000000;">
+
+            </canvas>
+        </main>
+        
+        <script>
+            var vid = document.getElementById("earthVideo");
+            var bark = document.getElementById("bark_audio");
+            
+            document.getElementById("playButton").addEventListener("click",function(){
+                vid.play(); 
+            });
+            document.getElementById("pauseButton").addEventListener("click",function(){
+                vid.pause(); 
+            });
+            
+            document.getElementById("dog_art").addEventListener("click", function(){
+                bark.play();
+            });
+            
+            //--------------------------------
+            // stuff for canvas
+            //--------------------------------
+            
+            var canvas = document.getElementById("kentsHouse");
+            var ctx = canvas.getContext("2d");
+            
+            document.getElementById("night_or_day").addEventListener("change", function(){
+                if(this.value == "day"){
+                    // background color
+                    ctx.fillStyle = "#7ec0ee";
+                    ctx.fillRect(0, 0, 500, 400);
+                    
+                    // sun
+                    ctx.beginPath();
+                    ctx.fillStyle = "#ffff00";
+                    ctx.arc(80,80,50,0,2*Math.PI);
+				    ctx.fill();
+                    
+                } else {
+                    // background color
+                    ctx.fillStyle = "#2e4482";
+                    ctx.fillRect(0, 0, 500, 400);
+                    
+                    // moon
+                    ctx.beginPath();
+                    ctx.fillStyle = "#bbbbbb";
+                    ctx.arc(80,80,50,0,2*Math.PI);
+				    ctx.fill();
+                    
+                    // moon - cutout
+                    ctx.beginPath();
+                    ctx.fillStyle = "#2e4482";
+                    ctx.arc(100,80,50,0,2*Math.PI);
+				    ctx.fill();
+                }
+                
+                
+                
+            });
+            
+            document.getElementById("white_or_red").addEventListener("change", function(){
+                if(this.value == "white"){
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillRect(100,200,300,200);
+                    
+                    
+                } else {
+                    ctx.fillStyle = "#ff0000";
+                    ctx.fillRect(100,200,300,200);
+                }
+                
+                // window
+                ctx.fillStyle = "#ffff00";
+                ctx.fillRect(120,230,80,80);
+                
+                //door
+                ctx.fillStyle = "#0000ff";
+                ctx.fillRect(260,230,80,190);
+            
+                //door knob
+                ctx.beginPath();
+                ctx.fillStyle = "#000000";
+                ctx.arc(320,310,5,0,2*Math.PI);
+				ctx.fill();
+                
+                // roof
+                ctx.beginPath();
+                ctx.moveTo(150,120);
+                ctx.lineTo(350,120);
+                ctx.lineTo(450,200);
+                ctx.lineTo(50,200);
+                ctx.stroke();
+                ctx.fill();
+             });   
+    </script>
+  </body>
+</html>
